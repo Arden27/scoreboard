@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeAll } from "vitest";
 import { Match } from "../src/match";
 
 describe("initial test", () => {
@@ -8,6 +8,16 @@ describe("initial test", () => {
 });
 
 describe("Match Class", () => {
+  let timeBeforeStart: number;
+  let match: Match;
+  let timeAfterStart: number;
+
+  beforeAll(() => {
+    timeBeforeStart = Date.now();
+    match = new Match("Brazil", "North Korea");
+    timeAfterStart = Date.now();
+  });
+
   it("should initialize with the home name, away name and both scores set to 0", () => {
     const match = new Match("Brazil", "North Korea");
 
@@ -18,10 +28,6 @@ describe("Match Class", () => {
   });
 
   it("should have correct start date", () => {
-    const timeBeforeStart = Date.now();
-    const match = new Match("Brazil", "North Korea");
-    const timeAfterStart = Date.now();
-
     expect(match.startTime).toBeGreaterThanOrEqual(timeBeforeStart);
     expect(match.startTime).toBeLessThanOrEqual(timeAfterStart);
   });
