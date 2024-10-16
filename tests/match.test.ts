@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import Match from "../src/match";
+import { Match } from "../src/match";
 
 describe("initial test", () => {
   it("should pass", () => {
