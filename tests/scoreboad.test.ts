@@ -16,7 +16,7 @@ describe("Scoreboard Class", () => {
     expect(summary).toEqual(["1. Australia 0 - Cuba 0"]);
   });
 
-  it("should be sorted by date", async () => {
+  it("should be sorted by startTime", async () => {
     scoreboard.startMatch("Australia", "Cuba");
     await new Promise((resolve) => setTimeout(resolve, 10));
     scoreboard.startMatch("Mongolia", "Canada");
@@ -25,5 +25,12 @@ describe("Scoreboard Class", () => {
       "1. Mongolia 0 - Canada 0",
       "2. Australia 0 - Cuba 0",
     ]);
+  });
+
+  it("should update the score", () => {
+    scoreboard.startMatch("Australia", "Cuba");
+    scoreboard.updateScore("Australia", "Cuba", 3, 2);
+    summary = scoreboard.getSummary();
+    expect(summary).toEqual(["1. Australia 3 - Cuba 2"]);
   });
 });
