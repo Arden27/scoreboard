@@ -13,6 +13,17 @@ export class Scoreboard {
     this.sortedMatches.splice(insertIndex, 0, match);
   }
 
+  updateScore(
+    homeTeam: string,
+    awayTeam: string,
+    newHomeScore: number,
+    newAwayScore: number
+  ) {
+    const matchKey = `${homeTeam} vs ${awayTeam}`;
+    const match = this.matches.get(matchKey);
+    match?.updateScore(newHomeScore, newAwayScore)
+  }
+
   getSummary() {
     return this.sortedMatches.map(
       (match, index) =>
