@@ -18,6 +18,7 @@ describe("Scoreboard Class", () => {
 
   it("should be sorted by date", async () => {
     scoreboard.startMatch("Australia", "Cuba");
+    await new Promise((resolve) => setTimeout(resolve, 10));
     scoreboard.startMatch("Mongolia", "Canada");
     summary = scoreboard.getSummary();
     expect(summary).toEqual([
