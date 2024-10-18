@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 
 import { Scoreboard } from "../src/scoreboard";
+import { ERROR_NO_MATCH } from "../src/constants";
 
 describe("Scoreboard Class", () => {
   let scoreboard: Scoreboard;
@@ -14,6 +15,7 @@ describe("Scoreboard Class", () => {
   it("should start a new match and add it to the scoreboard", () => {
     scoreboard.startMatch("Australia", "Cuba");
     summary = scoreboard.getSummary();
+
     expect(summary).toEqual(["1. Australia 0 - Cuba 0"]);
   });
 
@@ -37,6 +39,7 @@ describe("Scoreboard Class", () => {
     scoreboard.startMatch("Australia", "Cuba");
     scoreboard.updateScore("Australia", "Cuba", 3, 2);
     summary = scoreboard.getSummary();
+
     expect(summary).toEqual(["1. Australia 3 - Cuba 2"]);
   });
 
@@ -54,8 +57,8 @@ describe("Scoreboard Class", () => {
     scoreboard.updateScore("Poland", "Czechia", 3, 2);
     scoreboard.updateScore("Ukraine", "England", 5, 0);
     scoreboard.updateScore("China", "USA", 3, 4);
-
     summary = scoreboard.getSummary();
+
     expect(summary).toEqual([
       "1. China 3 - USA 4",
       "2. Poland 3 - Czechia 2",
@@ -78,8 +81,25 @@ describe("Scoreboard Class", () => {
     scoreboard.finishMatch("Poland", "Czechia");
     scoreboard.finishMatch("Israel", "Italy");
     summary = scoreboard.getSummary();
-    
+
     expect(summary).toEqual(["1. Ukraine 0 - England 0"]);
+  });
+
+  it("should throw an error when trying to update or finish non existing match", async () => {
+    await startMatches(
+      [
+        ["Israel", "Italy"],
+        ["China", "USA"],
+      ],
+      scoreboard
+    );
+
+    expect(() => {
+      scoreboard.finishMatch("Israel", "USA");
+    }).toThrowError(ERROR_NO_MATCH);
+    expect(() => {
+      scoreboard.updateScore("USA", "China", 1, 2);
+    }).toThrowError(ERROR_NO_MATCH);
   });
 });
 
