@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 
 import { Scoreboard } from "../src/scoreboard";
+
 describe("Scoreboard Class", () => {
   let scoreboard: Scoreboard;
   let summary: string[];
@@ -32,5 +33,28 @@ describe("Scoreboard Class", () => {
     scoreboard.updateScore("Australia", "Cuba", 3, 2);
     summary = scoreboard.getSummary();
     expect(summary).toEqual(["1. Australia 3 - Cuba 2"]);
+  });
+
+  it("should keep correct order after score update", async () => {
+    scoreboard.startMatch("Israel", "Italy");
+    await new Promise((resolve) => setTimeout(resolve, 10));
+    scoreboard.startMatch("Ukraine", "England");
+    await new Promise((resolve) => setTimeout(resolve, 10));
+    scoreboard.startMatch("Poland", "Czechia");
+    await new Promise((resolve) => setTimeout(resolve, 10));
+    scoreboard.startMatch("China", "USA");
+
+    scoreboard.updateScore("Israel", "Italy", 2, 2);
+    scoreboard.updateScore("Poland", "Czechia", 3, 2);
+    scoreboard.updateScore("Ukraine", "England", 5, 0);
+    scoreboard.updateScore("China", "USA", 3, 4);
+
+    summary = scoreboard.getSummary();
+    expect(summary).toEqual([
+      "1. China 3 - USA 4",
+      "2. Ukraine 5 - England 0",
+      "3. Poland 3 - Czechia 2",
+      "4. Israel 2 - Italy 2",
+    ]);
   });
 });
