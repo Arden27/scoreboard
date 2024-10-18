@@ -52,8 +52,8 @@ describe("Scoreboard Class", () => {
     summary = scoreboard.getSummary();
     expect(summary).toEqual([
       "1. China 3 - USA 4",
-      "2. Ukraine 5 - England 0",
-      "3. Poland 3 - Czechia 2",
+      "2. Poland 3 - Czechia 2",
+      "3. Ukraine 5 - England 0",
       "4. Israel 2 - Italy 2",
     ]);
   });
