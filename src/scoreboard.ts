@@ -1,5 +1,5 @@
 import { Match } from "./match";
-import { ERROR_NO_MATCH } from "./constants";
+import { ERROR_MATCH_EXISTS, ERROR_NO_MATCH } from "./constants";
 
 export class Scoreboard {
   matches: Map<string, Match> = new Map();
@@ -7,6 +7,10 @@ export class Scoreboard {
 
   startMatch(homeTeam: string, awayTeam: string) {
     const matchKey = `${homeTeam} vs ${awayTeam}`;
+    const isMatchExists = this.matches.get(matchKey);
+
+    if (isMatchExists) throw new Error(ERROR_MATCH_EXISTS);
+    
     const match = new Match(homeTeam, awayTeam);
     const insertIndex = this.findInsertionIndex(match);
 
