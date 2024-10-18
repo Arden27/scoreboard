@@ -21,7 +21,14 @@ export class Scoreboard {
   ) {
     const matchKey = `${homeTeam} vs ${awayTeam}`;
     const match = this.matches.get(matchKey);
-    match?.updateScore(newHomeScore, newAwayScore)
+
+    if (match) {
+      match.updateScore(newHomeScore, newAwayScore);
+      const removeIndex = this.sortedMatches.indexOf(match);
+      this.sortedMatches.splice(removeIndex, 1);
+      const insertIndex = this.findInsertionIndex(match);
+      this.sortedMatches.splice(insertIndex, 0, match);
+    } else throw new Error("No such match on the scoreboard");
   }
 
   getSummary() {
