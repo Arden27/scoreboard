@@ -10,7 +10,7 @@ export class Scoreboard {
     const isMatchExists = this.matches.get(matchKey);
 
     if (isMatchExists) throw new Error(ERROR_MATCH_EXISTS);
-    
+
     const match = new Match(homeTeam, awayTeam);
     const insertIndex = this.findInsertionIndex(match);
 
@@ -39,9 +39,12 @@ export class Scoreboard {
   finishMatch(homeTeam: string, awayTeam: string) {
     const matchKey = `${homeTeam} vs ${awayTeam}`;
     const match = this.matches.get(matchKey);
+    
     if (match) {
       const removeIndex = this.sortedMatches.indexOf(match);
+
       this.sortedMatches.splice(removeIndex, 1);
+      this.matches.delete(matchKey);
     } else throw new Error(ERROR_NO_MATCH);
   }
 
