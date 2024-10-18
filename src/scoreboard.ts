@@ -31,6 +31,15 @@ export class Scoreboard {
     } else throw new Error("No such match on the scoreboard");
   }
 
+  finishMatch(homeTeam: string, awayTeam: string) {
+    const matchKey = `${homeTeam} vs ${awayTeam}`;
+    const match = this.matches.get(matchKey);
+    if (match) {
+      const removeIndex = this.sortedMatches.indexOf(match);
+      this.sortedMatches.splice(removeIndex, 1);
+    } else throw new Error("No such match on the scoreboard");
+  }
+
   getSummary() {
     return this.sortedMatches.map(
       (match, index) =>
