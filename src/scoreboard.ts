@@ -1,4 +1,5 @@
 import { Match } from "./match";
+import { ERROR_NO_MATCH } from "./constants";
 
 export class Scoreboard {
   matches: Map<string, Match> = new Map();
@@ -28,7 +29,7 @@ export class Scoreboard {
       this.sortedMatches.splice(removeIndex, 1);
       const insertIndex = this.findInsertionIndex(match);
       this.sortedMatches.splice(insertIndex, 0, match);
-    } else throw new Error("No such match on the scoreboard");
+    } else throw new Error(ERROR_NO_MATCH);
   }
 
   finishMatch(homeTeam: string, awayTeam: string) {
@@ -37,7 +38,7 @@ export class Scoreboard {
     if (match) {
       const removeIndex = this.sortedMatches.indexOf(match);
       this.sortedMatches.splice(removeIndex, 1);
-    } else throw new Error("No such match on the scoreboard");
+    } else throw new Error(ERROR_NO_MATCH);
   }
 
   getSummary() {
