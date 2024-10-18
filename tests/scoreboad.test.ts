@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 
 import { Scoreboard } from "../src/scoreboard";
-import { ERROR_NO_MATCH } from "../src/constants";
+import { ERROR_NO_MATCH, ERROR_MATCH_EXISTS } from "../src/constants";
 
 describe("Scoreboard Class", () => {
   let scoreboard: Scoreboard;
@@ -35,7 +35,7 @@ describe("Scoreboard Class", () => {
     ]);
   });
 
-  it("should update the score", () => {
+  it("should update the score correctly", () => {
     scoreboard.startMatch("Australia", "Cuba");
     scoreboard.updateScore("Australia", "Cuba", 3, 2);
     summary = scoreboard.getSummary();
@@ -43,7 +43,7 @@ describe("Scoreboard Class", () => {
     expect(summary).toEqual(["1. Australia 3 - Cuba 2"]);
   });
 
-  it("should keep correct order after score update", async () => {
+  it("should maintain the correct order after a score update", async () => {
     await startMatches(
       [
         ["Israel", "Italy"],
@@ -67,7 +67,7 @@ describe("Scoreboard Class", () => {
     ]);
   });
 
-  it("should finish selected match and remove it from the scoreboard", async () => {
+  it("should finish the selected match and remove it from the scoreboard", async () => {
     await startMatches(
       [
         ["Israel", "Italy"],
@@ -85,7 +85,7 @@ describe("Scoreboard Class", () => {
     expect(summary).toEqual(["1. Ukraine 0 - England 0"]);
   });
 
-  it("should throw an error when trying to update or finish non existing match", async () => {
+  it("should throw an error when updating or finishing a non-existing match", async () => {
     await startMatches(
       [
         ["Israel", "Italy"],
@@ -100,6 +100,13 @@ describe("Scoreboard Class", () => {
     expect(() => {
       scoreboard.updateScore("USA", "China", 1, 2);
     }).toThrowError(ERROR_NO_MATCH);
+  });
+
+  it("should throw an error when starting a match that already exists", () => {
+    scoreboard.startMatch("Australia", "Cuba");
+    expect(() => {
+      scoreboard.startMatch("Australia", "Cuba");
+    }).toThrowError(ERROR_MATCH_EXISTS);
   });
 });
 
