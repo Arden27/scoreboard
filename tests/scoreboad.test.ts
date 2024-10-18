@@ -63,6 +63,24 @@ describe("Scoreboard Class", () => {
       "4. Israel 2 - Italy 2",
     ]);
   });
+
+  it("should finish selected match and remove it from the scoreboard", async () => {
+    await startMatches(
+      [
+        ["Israel", "Italy"],
+        ["Ukraine", "England"],
+        ["Poland", "Czechia"],
+        ["China", "USA"],
+      ],
+      scoreboard
+    );
+    scoreboard.finishMatch("China", "USA");
+    scoreboard.finishMatch("Poland", "Czechia");
+    scoreboard.finishMatch("Israel", "Italy");
+    summary = scoreboard.getSummary();
+    
+    expect(summary).toEqual(["1. Ukraine 0 - England 0"]);
+  });
 });
 
 async function startMatches(
