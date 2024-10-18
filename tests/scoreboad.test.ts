@@ -18,10 +18,15 @@ describe("Scoreboard Class", () => {
   });
 
   it("should be sorted by startTime", async () => {
-    scoreboard.startMatch("Australia", "Cuba");
-    await new Promise((resolve) => setTimeout(resolve, 10));
-    scoreboard.startMatch("Mongolia", "Canada");
+    await startMatches(
+      [
+        ["Australia", "Cuba"],
+        ["Mongolia", "Canada"],
+      ],
+      scoreboard
+    );
     summary = scoreboard.getSummary();
+
     expect(summary).toEqual([
       "1. Mongolia 0 - Canada 0",
       "2. Australia 0 - Cuba 0",
@@ -36,14 +41,15 @@ describe("Scoreboard Class", () => {
   });
 
   it("should keep correct order after score update", async () => {
-    scoreboard.startMatch("Israel", "Italy");
-    await new Promise((resolve) => setTimeout(resolve, 10));
-    scoreboard.startMatch("Ukraine", "England");
-    await new Promise((resolve) => setTimeout(resolve, 10));
-    scoreboard.startMatch("Poland", "Czechia");
-    await new Promise((resolve) => setTimeout(resolve, 10));
-    scoreboard.startMatch("China", "USA");
-
+    await startMatches(
+      [
+        ["Israel", "Italy"],
+        ["Ukraine", "England"],
+        ["Poland", "Czechia"],
+        ["China", "USA"],
+      ],
+      scoreboard
+    );
     scoreboard.updateScore("Israel", "Italy", 2, 2);
     scoreboard.updateScore("Poland", "Czechia", 3, 2);
     scoreboard.updateScore("Ukraine", "England", 5, 0);
@@ -58,3 +64,13 @@ describe("Scoreboard Class", () => {
     ]);
   });
 });
+
+async function startMatches(
+  matches: [string, string][],
+  scoreboard: Scoreboard
+) {
+  for (const match of matches) {
+    scoreboard.startMatch(match[0], match[1]);
+    await new Promise<void>((resolve) => setTimeout(resolve, 1));
+  }
+}
