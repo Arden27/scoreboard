@@ -67,7 +67,7 @@ describe("Scoreboard Class", () => {
     ]);
   });
 
-  it("should finish the selected match and remove it from the scoreboard", async () => {
+  it("should finish the selected match and remove it from both matches map and sortedMatches array", async () => {
     await startMatches(
       [
         ["Israel", "Italy"],
@@ -81,8 +81,10 @@ describe("Scoreboard Class", () => {
     scoreboard.finishMatch("Poland", "Czechia");
     scoreboard.finishMatch("Israel", "Italy");
     summary = scoreboard.getSummary();
+    const isMatchDeleted = !scoreboard.matches.get("Poland vs Czechia");
 
     expect(summary).toEqual(["1. Ukraine 0 - England 0"]);
+    expect(isMatchDeleted).toBe(true);
   });
 
   it("should throw an error when updating or finishing a non-existing match", async () => {
