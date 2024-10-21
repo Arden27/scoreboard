@@ -1,6 +1,6 @@
 import { Match } from "./match";
 import {
-  ERROR_MATCH_EXISTS,
+  ERROR_ALREADY_PLAYING,
   ERROR_NO_MATCH,
   ERROR_SAME_TEAM,
 } from "./constants";
@@ -11,18 +11,18 @@ export class Scoreboard {
   activeTeams: Set<string> = new Set();
 
   startMatch(homeTeam: string, awayTeam: string) {
-    if (this.isSameTeams(homeTeam, awayTeam)) throw new Error(ERROR_SAME_TEAM);
+    if (this.isSameTeam(homeTeam, awayTeam)) throw new Error(ERROR_SAME_TEAM);
+    if (this.isPlaying(homeTeam, awayTeam))
+      throw new Error(ERROR_ALREADY_PLAYING);
 
     const matchKey = this.generateMatchKey(homeTeam, awayTeam);
-    const isMatchExists = this.matches.get(matchKey);
-
-    if (isMatchExists) throw new Error(ERROR_MATCH_EXISTS);
-
     const match = new Match(homeTeam, awayTeam);
     const insertIndex = this.findInsertionIndex(match);
 
     this.matches.set(matchKey, match);
     this.sortedMatches.splice(insertIndex, 0, match);
+    this.activeTeams.add(this.normalize(homeTeam));
+    this.activeTeams.add(this.normalize(awayTeam));
   }
 
   updateScore(
@@ -52,6 +52,8 @@ export class Scoreboard {
 
       this.sortedMatches.splice(removeIndex, 1);
       this.matches.delete(matchKey);
+      this.activeTeams.delete(this.normalize(homeTeam));
+      this.activeTeams.delete(this.normalize(awayTeam));
     } else throw new Error(ERROR_NO_MATCH);
   }
 
@@ -98,7 +100,14 @@ export class Scoreboard {
     return `${home} vs ${away}`;
   }
 
-  private isSameTeams(homeTeam: string, awayTeam: string) {
+  private isSameTeam(homeTeam: string, awayTeam: string) {
     return this.normalize(homeTeam) === this.normalize(awayTeam);
+  }
+
+  private isPlaying(homeTeam: string, awayTeam: string) {
+    return (
+      this.activeTeams.has(this.normalize(homeTeam)) ||
+      this.activeTeams.has(this.normalize(awayTeam))
+    );
   }
 }

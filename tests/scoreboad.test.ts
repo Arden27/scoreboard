@@ -3,7 +3,6 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { Scoreboard } from "../src/scoreboard";
 import {
   ERROR_NO_MATCH,
-  ERROR_MATCH_EXISTS,
   ERROR_SAME_TEAM,
   ERROR_ALREADY_PLAYING,
 } from "../src/constants";
@@ -114,7 +113,7 @@ describe("Scoreboard Class", () => {
 
     expect(() => {
       scoreboard.startMatch("Australia", "Cuba");
-    }).toThrowError(ERROR_MATCH_EXISTS);
+    }).toThrowError(ERROR_ALREADY_PLAYING);
   });
 
   it("should throw an error when trying to start a match with the same teams but with different casing", () => {
@@ -122,7 +121,7 @@ describe("Scoreboard Class", () => {
 
     expect(() => {
       scoreboard.startMatch("AUStRALia", "CuBa");
-    }).toThrowError(ERROR_MATCH_EXISTS);
+    }).toThrowError(ERROR_ALREADY_PLAYING);
   });
 
   it("should not allow a team to play against itself", () => {
@@ -131,16 +130,22 @@ describe("Scoreboard Class", () => {
     }).toThrowError(ERROR_SAME_TEAM);
   });
 
-  it("should prevent match from start if one or both teams are already playing", () => {
+  it("should prevent a match from starting if one or both teams are already playing", () => {
+    scoreboard.startMatch("USA", "China");
+
     expect(() => {
-      startMatches(
-        [
-          ["USA", "China"],
-          ["USA", "Peru"],
-        ],
-        scoreboard
-      );
+      scoreboard.startMatch("Peru", "USA");
     }).toThrowError(ERROR_ALREADY_PLAYING);
+
+    expect(() => {
+      scoreboard.startMatch("Brazil", "China");
+    }).toThrowError(ERROR_ALREADY_PLAYING);
+
+    expect(() => {
+      scoreboard.finishMatch("USA", "China");
+      scoreboard.startMatch("Brazil", "China");
+      scoreboard.startMatch("Peru", "USA");
+    }).not.toThrowError();
   });
 });
 
