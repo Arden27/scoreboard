@@ -5,6 +5,7 @@ import {
   ERROR_NO_MATCH,
   ERROR_MATCH_EXISTS,
   ERROR_SAME_TEAM,
+  ERROR_ALREADY_PLAYING,
 } from "../src/constants";
 
 describe("Scoreboard Class", () => {
@@ -128,6 +129,18 @@ describe("Scoreboard Class", () => {
     expect(() => {
       scoreboard.startMatch("Austria", "Austria");
     }).toThrowError(ERROR_SAME_TEAM);
+  });
+
+  it("should prevent match from start if one or both teams are already playing", () => {
+    expect(() => {
+      startMatches(
+        [
+          ["USA", "China"],
+          ["USA", "Peru"],
+        ],
+        scoreboard
+      );
+    }).toThrowError(ERROR_ALREADY_PLAYING);
   });
 });
 
