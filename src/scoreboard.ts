@@ -8,6 +8,7 @@ import {
 export class Scoreboard {
   matches: Map<string, Match> = new Map();
   sortedMatches: Match[] = [];
+  activeTeams: Set<string> = new Set();
 
   startMatch(homeTeam: string, awayTeam: string) {
     if (this.isSameTeams(homeTeam, awayTeam)) throw new Error(ERROR_SAME_TEAM);
@@ -87,14 +88,17 @@ export class Scoreboard {
     return low;
   }
 
+  private normalize(team: string) {
+    return team.trim().toLowerCase();
+  }
+
   private generateMatchKey(homeTeam: string, awayTeam: string) {
-    const normalize = (team: string) => team.trim().toLowerCase();
-    const home = normalize(homeTeam);
-    const away = normalize(awayTeam);
+    const home = this.normalize(homeTeam);
+    const away = this.normalize(awayTeam);
     return `${home} vs ${away}`;
   }
 
   private isSameTeams(homeTeam: string, awayTeam: string) {
-    return homeTeam.trim().toLowerCase() === awayTeam.trim().toLowerCase();
+    return this.normalize(homeTeam) === this.normalize(awayTeam);
   }
 }
