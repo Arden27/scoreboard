@@ -6,7 +6,7 @@ export class Scoreboard {
   sortedMatches: Match[] = [];
 
   startMatch(homeTeam: string, awayTeam: string) {
-    const matchKey = `${homeTeam} vs ${awayTeam}`;
+    const matchKey = this.generateMatchKey(homeTeam, awayTeam);
     const isMatchExists = this.matches.get(matchKey);
 
     if (isMatchExists) throw new Error(ERROR_MATCH_EXISTS);
@@ -24,7 +24,7 @@ export class Scoreboard {
     newHomeScore: number,
     newAwayScore: number
   ) {
-    const matchKey = `${homeTeam} vs ${awayTeam}`;
+    const matchKey = this.generateMatchKey(homeTeam, awayTeam);
     const match = this.matches.get(matchKey);
 
     if (match) {
@@ -37,9 +37,9 @@ export class Scoreboard {
   }
 
   finishMatch(homeTeam: string, awayTeam: string) {
-    const matchKey = `${homeTeam} vs ${awayTeam}`;
+    const matchKey = this.generateMatchKey(homeTeam, awayTeam);
     const match = this.matches.get(matchKey);
-    
+
     if (match) {
       const removeIndex = this.sortedMatches.indexOf(match);
 
@@ -79,5 +79,12 @@ export class Scoreboard {
     }
 
     return low;
+  }
+
+  private generateMatchKey(homeTeam: string, awayTeam: string) {
+    const normalize = (team: string) => team.trim().toLowerCase();
+    const home = normalize(homeTeam);
+    const away = normalize(awayTeam);
+    return `${home} vs ${away}`;
   }
 }
