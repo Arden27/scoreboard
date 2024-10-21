@@ -1,11 +1,17 @@
 import { Match } from "./match";
-import { ERROR_MATCH_EXISTS, ERROR_NO_MATCH } from "./constants";
+import {
+  ERROR_MATCH_EXISTS,
+  ERROR_NO_MATCH,
+  ERROR_SAME_TEAM,
+} from "./constants";
 
 export class Scoreboard {
   matches: Map<string, Match> = new Map();
   sortedMatches: Match[] = [];
 
   startMatch(homeTeam: string, awayTeam: string) {
+    if (this.isSameTeams(homeTeam, awayTeam)) throw new Error(ERROR_SAME_TEAM);
+
     const matchKey = this.generateMatchKey(homeTeam, awayTeam);
     const isMatchExists = this.matches.get(matchKey);
 
@@ -86,5 +92,9 @@ export class Scoreboard {
     const home = normalize(homeTeam);
     const away = normalize(awayTeam);
     return `${home} vs ${away}`;
+  }
+
+  private isSameTeams(homeTeam: string, awayTeam: string) {
+    return homeTeam.trim().toLowerCase() === awayTeam.trim().toLowerCase();
   }
 }
