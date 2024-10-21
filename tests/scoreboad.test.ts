@@ -110,6 +110,13 @@ describe("Scoreboard Class", () => {
       scoreboard.startMatch("Australia", "Cuba");
     }).toThrowError(ERROR_MATCH_EXISTS);
   });
+
+  it("should throw an error when trying to start a match with the same teams but with different casing", () => {
+    scoreboard.startMatch("Australia", "Cuba");
+    expect(() => {
+      scoreboard.startMatch("AUStRALia", "CuBa");
+    }).toThrowError(ERROR_MATCH_EXISTS);
+  });
 });
 
 async function startMatches(
