@@ -1,8 +1,9 @@
 {
   "name": "football-scoreboard",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A live football World Cup scoreboard library.",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "keywords": [
     "scoreboard",
     "football",
