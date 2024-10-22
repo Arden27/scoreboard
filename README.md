@@ -2,6 +2,10 @@
 
 Welcome to the **Live Football World Cup Scoreboard** library! This library allows you to track ongoing football matches, update scores, finish matches, and get a summary of all matches in progress, ordered according to specific criteria.
 
+---
+
+**Note**: This library is a simplified implementation intended for educational purposes and may not cover all real-world scenarios.
+
 ## Table of Contents
 
 - [Features](#features)
@@ -36,6 +40,8 @@ npm install football-scoreboard
 
 Ensure you have [Node.js](https://nodejs.org/en/) installed on your system.
 
+**or**
+
 Clone the repository and install the dependencies:
 
 ```bash
@@ -53,7 +59,7 @@ This library is designed to be simple and straightforward to use in any Node.js 
 To start tracking a new match:
 
 ```typescript
-import { Scoreboard } from './src/scoreboard';
+import { Scoreboard } from 'football-scoreboard';
 
 const scoreboard = new Scoreboard();
 scoreboard.startMatch('Mexico', 'Canada');
@@ -157,7 +163,3 @@ Contributions are welcome! Please follow these steps:
 ## License
 
 This project is licensed under the ISC License.
-
----
-
-**Note**: This library is a simplified implementation intended for educational purposes and may not cover all real-world scenarios.
