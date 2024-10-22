@@ -1,14 +1,18 @@
 {
-  "name": "scoreboard",
+  "name": "football-scoreboard",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "A live football World Cup scoreboard library.",
+  "main": "dist/index.js",
+  "keywords": [
+    "scoreboard",
+    "football",
+    "world-cup"
+  ],
+  "license": "MIT",
   "scripts": {
+    "build": "tsc",
     "test": "vitest"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "devDependencies": {
     "@types/node": "^22.7.5",
     "typescript": "^5.6.3",
