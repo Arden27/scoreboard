@@ -28,6 +28,12 @@ Welcome to the **Live Football World Cup Scoreboard** library! This library allo
 
 ## Installation
 
+You can install the package from npm:
+
+```bash
+npm install football-scoreboard
+```
+
 Ensure you have [Node.js](https://nodejs.org/en/) installed on your system.
 
 Clone the repository and install the dependencies:
